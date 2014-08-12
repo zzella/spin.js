@@ -1,6 +1,7 @@
 /**
  * Copyright (c) 2011-2014 Felix Gnass
  * Licensed under the MIT license
+ * 
  */
 (function(root, factory) {
 
@@ -154,7 +155,8 @@
     className: 'spinner', // CSS class to assign to the element
     top: '50%',           // center vertically
     left: '50%',          // center horizontally
-    position: 'absolute'  // element position
+    position: 'absolute', // element position
+    delay: 0              // Initially hide the animation for this many milliseconds 
   }
 
   /** The constructor */
@@ -184,9 +186,22 @@
         left: o.left,
         top: o.top
       })
+      
+      //If a delay is set, initially hide the element
+      var elDisplay = el.style.display; //get initial display setting 
+      if(o.delay > 0){
+        el.style.display = 'none';
+      }
         
       if (target) {
-        target.insertBefore(el, target.firstChild||null)
+        target.insertBefore(el, target.firstChild||null);
+        
+        //If a delay is set, wait before revealing animation
+        if(o.delay > 0){ 
+          setTimeout(function(){ 
+            el.style.display = elDisplay; //restore initial display setting
+          }, o.delay);
+        }
       }
 
       el.setAttribute('role', 'progressbar')
